@@ -8,7 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
+      enum ColorList: String, CaseIterable {
+            case red
+            case orange
+            case yellow
+            case green
+            case blue
+            
+            var color: Color {
+                  switch self {
+                        case .red:
+                              return Color.red
+                              
+                        case .orange:
+                              return Color.orange
+                              
+                        case .yellow:
+                              return Color.yellow
+                              
+                        case .green:
+                              return Color.green
+                              
+                        case .blue:
+                              return Color.blue
+                  }
+            }
+      }
+      
       @State var name: String = ""
+      @State var color: ColorList = .orange
       @ObservedObject var model = ToDoItemModel()
       @State var isPresented: Bool = false
       
@@ -17,6 +45,7 @@ struct ContentView: View {
                 VStack {
                       List(model.toDoItem, id: \.id) { item in
                             Text(item.name)
+                                  .foregroundColor(color.color)
                                   .swipeActions {
                                         Button(role: .destructive) {
                                               if let index = model.toDoItem.firstIndex(of: item) {
@@ -45,6 +74,15 @@ struct ContentView: View {
                                         .onAppear {
                                               UITextField.appearance().clearButtonMode = .whileEditing
                                         }
+                                  
+                                  List {
+                                        Picker("Color", selection: $color) {
+                                              ForEach(ColorList.allCases, id: \.self) { color in
+                                                    Text(color.rawValue.capitalized)
+                                                          .foregroundColor(color.color)
+                                              }
+                                        }
+                                  }
                                   
                                   Button {
                                         model.appendItemToList(name: name, tag: "")
