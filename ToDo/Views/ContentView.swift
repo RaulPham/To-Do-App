@@ -39,6 +39,7 @@ struct ContentView: View {
       @State var color: ColorList = .orange
       @ObservedObject var model = ToDoItemModel()
       @State var isPresented: Bool = false
+      @State var anotherIsPresented: Bool = false
       
     var body: some View {
           NavigationView {
@@ -62,9 +63,18 @@ struct ContentView: View {
                             self.isPresented = true
                       } label: {
                             HStack {
-                                Text("Add")
+                                Text("add")
                                 Image(systemName: "plus")
                           }
+                      }
+                      
+                      Button {
+                            self.anotherIsPresented = true
+                      } label: {
+                            HStack {
+                                  Text("change text color")
+                                  Image(systemName: "circle.grid.hex")
+                            }
                       }
                 }
                 .sheet(isPresented: $isPresented) {
@@ -74,7 +84,21 @@ struct ContentView: View {
                                         .onAppear {
                                               UITextField.appearance().clearButtonMode = .whileEditing
                                         }
-                                  
+      
+                                  Button {
+                                        model.appendItemToList(name: name)
+                                        self.isPresented = false
+                                  } label: {
+                                        VStack {
+                                              Text("Add")
+                                        }
+                                  }
+                            }
+                      }
+                }
+                .sheet(isPresented: $anotherIsPresented) {
+                      VStack {
+                            Form {
                                   List {
                                         Picker("Color", selection: $color) {
                                               ForEach(ColorList.allCases, id: \.self) { color in
@@ -85,11 +109,10 @@ struct ContentView: View {
                                   }
                                   
                                   Button {
-                                        model.appendItemToList(name: name, tag: "")
-                                        self.isPresented = false
+                                        self.anotherIsPresented = false
                                   } label: {
                                         VStack {
-                                              Text("Add")
+                                              Text("Change")
                                         }
                                   }
                             }

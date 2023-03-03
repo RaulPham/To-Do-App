@@ -10,8 +10,8 @@ import Foundation
 class ToDoItemModel: ObservableObject {
       @Published var toDoItem: [ToDoItem] = []
       
-      func appendItemToList(name: String, tag: String) {
-            toDoItem.append(ToDoItem(name: name, tag: tag))
+      func appendItemToList(name: String) {
+            toDoItem.append(ToDoItem(name: name))
       }
       
       func removeItemFromList(index: Int) {
