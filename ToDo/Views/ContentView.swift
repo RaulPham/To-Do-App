@@ -18,14 +18,10 @@ struct ContentView: View {
                       List(model.toDoItem, id: \.id) { item in
                             Text(item.name)
                                   .swipeActions {
-                                        Button {
-                                              self.isPresented = true
-                                        } label: {
-                                              Label("Edit", systemImage: "pencil")
-                                        }
-                                        
                                         Button(role: .destructive) {
-                                              print("Deleting Item")
+                                              if let index = model.toDoItem.firstIndex(of: item) {
+                                                    model.removeItemFromList(index: index)
+                                              }
                                         } label: {
                                               Label("Delete", systemImage: "trash.fill")
                                         }
@@ -49,7 +45,7 @@ struct ContentView: View {
                                         .onAppear {
                                               UITextField.appearance().clearButtonMode = .whileEditing
                                         }
-                  
+                                  
                                   Button {
                                         model.appendItemToList(name: name, tag: "")
                                         self.isPresented = false
@@ -67,6 +63,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+          ContentView()
     }
 }

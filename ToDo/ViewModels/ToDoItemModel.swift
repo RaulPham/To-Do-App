@@ -13,4 +13,8 @@ class ToDoItemModel: ObservableObject {
       func appendItemToList(name: String, tag: String) {
             toDoItem.append(ToDoItem(name: name, tag: tag))
       }
+      
+      func removeItemFromList(index: Int) {
+            toDoItem.remove(at: index)
+      }
 }
